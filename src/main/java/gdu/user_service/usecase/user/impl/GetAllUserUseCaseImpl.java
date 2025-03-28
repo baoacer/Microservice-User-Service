@@ -1,10 +1,9 @@
 package gdu.user_service.usecase.user.impl;
 
 import gdu.user_service.entity.UserEntity;
-import gdu.user_service.model.response.GetUserResponse;
+import gdu.user_service.model.response.UserResponse;
 import gdu.user_service.model.response.ObjectResponse;
 import gdu.user_service.repository.UserRepository;
-import gdu.user_service.model.UserDto;
 import gdu.user_service.model.request.GetAllUserRequest;
 import gdu.user_service.usecase.user.GetAllUserUseCase;
 import lombok.AllArgsConstructor;
@@ -21,13 +20,13 @@ public class GetAllUserUseCaseImpl implements GetAllUserUseCase {
     private final UserRepository userRepository;
 
     @Override
-    public ObjectResponse<GetUserResponse> execute(GetAllUserRequest request) {
+    public ObjectResponse<UserResponse> execute(GetAllUserRequest request) {
         PageRequest pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<UserEntity> pageResult = this.userRepository.findAll(pageable);
 
 
-        List<GetUserResponse> users = pageResult.getContent().stream().map(
-                user -> GetUserResponse.builder()
+        List<UserResponse> users = pageResult.getContent().stream().map(
+                user -> UserResponse.builder()
                         .id(user.getId())
                         .email(user.getEmail())
                         .phoneNumber(user.getPhoneNumber())
@@ -35,7 +34,7 @@ public class GetAllUserUseCaseImpl implements GetAllUserUseCase {
                         .build()
         ).toList();
 
-        ObjectResponse<GetUserResponse> response = new ObjectResponse<>();
+        ObjectResponse<UserResponse> response = new ObjectResponse<>();
         response.setContent(users);
         response.setTotalPages(pageResult.getTotalPages());
         response.setTotalElements(pageResult.getTotalElements());

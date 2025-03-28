@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GetUserResponse {
+public class UserResponse {
     private int id;
     private String email;
     private String phoneNumber;

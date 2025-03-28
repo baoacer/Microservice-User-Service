@@ -4,11 +4,10 @@ import gdu.user_service.model.UserDto;
 import gdu.user_service.model.request.CreateUserRequest;
 import gdu.user_service.model.request.GetAllUserRequest;
 import gdu.user_service.model.request.UpdateUserRequest;
-import gdu.user_service.model.response.GetUserResponse;
+import gdu.user_service.model.response.UserResponse;
 import gdu.user_service.model.response.ObjectResponse;
 import gdu.user_service.usecase.user.*;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,20 +24,20 @@ public class UserController {
     private final UpdateUserUseCase updateUserUseCase;
 
     @GetMapping("/user")
-    public ResponseEntity<ObjectResponse<GetUserResponse>> getUsers(
+    public ResponseEntity<ObjectResponse<UserResponse>> getUsers(
             @RequestParam byte size,
             @RequestParam byte page
     ) {
         GetAllUserRequest request = new GetAllUserRequest(size, page);
-        ObjectResponse<GetUserResponse> users = this.getAllUserUseCase.execute(request);
+        ObjectResponse<UserResponse> users = this.getAllUserUseCase.execute(request);
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     @GetMapping("/user-by")
-    public ResponseEntity<GetUserResponse> getUser(
+    public ResponseEntity<UserResponse> getUser(
             @RequestParam int id
     ) {
-        GetUserResponse user = this.getByIdUserUseCase.execute(id);
+        UserResponse user = this.getByIdUserUseCase.execute(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
