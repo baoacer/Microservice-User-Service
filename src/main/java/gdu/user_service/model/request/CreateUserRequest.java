@@ -11,7 +11,4 @@ public class CreateUserRequest {
 
     @NotBlank
     private String password;
-
-    @NotBlank
-    private String phoneNumber;
 }

@@ -21,20 +21,20 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private static final String role = "ROLE_USER";
 
     @Override
     public UserDto execute(CreateUserRequest request) {
         UserEntity foundUser = this.userRepository.findByEmail(request.getEmail());
         if(foundUser != null) throw new NotFoundException("User not found");
 
-        RoleEntity userRole = this.roleRepository.findByName("ROLE_USER");
+        RoleEntity userRole = this.roleRepository.findByName(role);
 
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         UserEntity user = new UserEntity();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setPhoneNumber(request.getPhoneNumber());
         user.setRoleEntity(userRole);
 
         UserEntity saveUser = this.userRepository.save(user);
@@ -42,7 +42,6 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
         return UserDto.builder()
                 .id(saveUser.getId())
                 .email(saveUser.getEmail())
-                .phoneNumber(saveUser.getPhoneNumber())
                 .password(saveUser.getPassword())
                 .role(saveUser.getRoleEntity().getName())
                 .build();
