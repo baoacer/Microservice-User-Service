@@ -2,7 +2,6 @@ package gdu.user_service.controller;
 
 import gdu.user_service.model.RoleDto;
 import gdu.user_service.model.request.CreateRoleRequest;
-import gdu.user_service.model.request.GetRoleRequest;
 import gdu.user_service.model.response.ObjectResponse;
 import gdu.user_service.usecase.role.CreateRoleUseCase;
 import gdu.user_service.usecase.role.DeleteRoleUseCase;
@@ -12,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1")
@@ -23,15 +24,8 @@ public class RoleController {
     private final DeleteRoleUseCase deleteRoleUseCase;
 
     @GetMapping("/role")
-    public ResponseEntity<ObjectResponse<RoleDto>> getRoles(
-            @RequestParam byte size,
-            @RequestParam byte page
-    ) {
-        GetRoleRequest request = GetRoleRequest.builder()
-                .size(size)
-                .page(page)
-                .build();
-        ObjectResponse<RoleDto> roles = this.getAllRoleUseCase.execute(request);
+    public ResponseEntity<List<RoleDto>> getRoles() {
+        List<RoleDto> roles = this.getAllRoleUseCase.execute();
         return ResponseEntity.status(HttpStatus.OK).body(roles);
     }
 

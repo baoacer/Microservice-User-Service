@@ -9,6 +9,7 @@ import gdu.user_service.usecase.user.GetAllUserUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,9 @@ public class GetAllUserUseCaseImpl implements GetAllUserUseCase {
 
     @Override
     public ObjectResponse<UserResponse> execute(GetAllUserRequest request) {
-        PageRequest pageable = PageRequest.of(request.getPage(), request.getSize());
+        Sort sort = Sort.by(request.getSortDirection(), request.getSortBy());
+        PageRequest pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
+
         Page<UserEntity> pageResult = this.userRepository.findAll(pageable);
 
 

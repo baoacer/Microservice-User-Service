@@ -8,6 +8,7 @@ import gdu.user_service.model.response.UserResponse;
 import gdu.user_service.model.response.ObjectResponse;
 import gdu.user_service.usecase.user.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,9 +27,16 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<ObjectResponse<UserResponse>> getUsers(
             @RequestParam byte size,
-            @RequestParam byte page
+            @RequestParam byte page,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection
     ) {
-        GetAllUserRequest request = new GetAllUserRequest(size, page);
+        GetAllUserRequest request = GetAllUserRequest.builder()
+                .page(page)
+                .size(size)
+                .sortBy(sortBy)
+                .sortDirection(sortDirection)
+                .build();
         ObjectResponse<UserResponse> users = this.getAllUserUseCase.execute(request);
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
@@ -50,7 +58,7 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<UserDto> getUsers(
+    public ResponseEntity<UserDto> updateUser(
             @RequestBody UpdateUserRequest request
     ) {
         UserDto user = this.updateUserUseCase.execute(request);
