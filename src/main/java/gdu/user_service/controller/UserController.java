@@ -3,6 +3,7 @@ package gdu.user_service.controller;
 import gdu.user_service.model.UserDto;
 import gdu.user_service.model.request.CreateUserRequest;
 import gdu.user_service.model.request.GetAllUserRequest;
+import gdu.user_service.model.request.GetUserByEmailRequest;
 import gdu.user_service.model.request.UpdateUserRequest;
 import gdu.user_service.model.response.UserResponse;
 import gdu.user_service.model.response.ObjectResponse;
@@ -23,6 +24,7 @@ public class UserController {
     private final GetByIdUserUseCase getByIdUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
+    private final GetUserByEmailUseCase getUserByEmailUseCase;
 
     @GetMapping("/user")
     public ResponseEntity<ObjectResponse<UserResponse>> getUsers(
@@ -42,10 +44,23 @@ public class UserController {
     }
 
     @GetMapping("/user-by")
-    public ResponseEntity<UserResponse> getUser(
+    public ResponseEntity<UserResponse> getUserById(
             @RequestParam int id
     ) {
         UserResponse user = this.getByIdUserUseCase.execute(id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @GetMapping("/user-by-email")
+    public ResponseEntity<UserResponse> getUserByEmail(
+            @RequestParam String email
+    ) {
+        GetUserByEmailRequest request = GetUserByEmailRequest
+                .builder()
+                .email(email)
+                .build();
+
+        UserResponse user = this.getUserByEmailUseCase.execute(request);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
