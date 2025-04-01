@@ -10,8 +10,8 @@ import org.springframework.data.domain.Sort;
 public class GetAllUserRequest {
     private byte size;
     private byte page;
-
-
+    @Builder.Default
     private String sortBy = "id";
+    @Builder.Default
     private Sort.Direction sortDirection = Sort.Direction.DESC;
 }

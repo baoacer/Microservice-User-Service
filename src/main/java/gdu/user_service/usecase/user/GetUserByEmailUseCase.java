@@ -1,8 +1,8 @@
 package gdu.user_service.usecase.user;
 
 import gdu.user_service.model.request.GetUserByEmailRequest;
-import gdu.user_service.model.response.UserResponse;
+import gdu.user_service.model.response.GetUserByEmailResponse;
 
 public interface GetUserByEmailUseCase {
-    UserResponse execute(GetUserByEmailRequest request);
+    GetUserByEmailResponse execute(GetUserByEmailRequest request);
 }

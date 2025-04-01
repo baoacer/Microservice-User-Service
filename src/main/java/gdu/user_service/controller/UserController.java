@@ -5,6 +5,7 @@ import gdu.user_service.model.request.CreateUserRequest;
 import gdu.user_service.model.request.GetAllUserRequest;
 import gdu.user_service.model.request.GetUserByEmailRequest;
 import gdu.user_service.model.request.UpdateUserRequest;
+import gdu.user_service.model.response.GetUserByEmailResponse;
 import gdu.user_service.model.response.UserResponse;
 import gdu.user_service.model.response.ObjectResponse;
 import gdu.user_service.usecase.user.*;
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/user-by-email")
-    public ResponseEntity<UserResponse> getUserByEmail(
+    public ResponseEntity<GetUserByEmailResponse> getUserByEmail(
             @RequestParam String email
     ) {
         GetUserByEmailRequest request = GetUserByEmailRequest
@@ -60,7 +61,7 @@ public class UserController {
                 .email(email)
                 .build();
 
-        UserResponse user = this.getUserByEmailUseCase.execute(request);
+        GetUserByEmailResponse user = this.getUserByEmailUseCase.execute(request);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
