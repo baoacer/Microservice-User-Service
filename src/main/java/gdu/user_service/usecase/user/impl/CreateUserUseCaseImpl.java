@@ -26,7 +26,6 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
 
     @Override
     public UserDto execute(CreateUserRequest request) {
-        System.out.println("==================" + request.getRoleName());
         UserEntity foundUser = this.userRepository.findByEmail(request.getEmail());
         if(foundUser != null) throw new ConflictException("Email already exists");
 

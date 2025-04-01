@@ -27,7 +27,6 @@ public class GetAllUserUseCaseImpl implements GetAllUserUseCase {
 
         Page<UserEntity> pageResult = this.userRepository.findAll(pageable);
 
-
         List<UserResponse> users = pageResult.getContent().stream().map(
                 user -> UserResponse.builder()
                         .id(user.getId())
